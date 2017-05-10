@@ -90,6 +90,37 @@ class TestCase extends PHPUnitTestCase
     }
 
     /**
+     * Create temporary Git configuration file.
+     *
+     * @param  string $content Content of file.
+     *
+     * @return string
+     * @throws \RuntimeException
+     */
+    protected function createTemporaryGitConfiguration($content, array $directories = [], $configurationFileName = '.gitconfig')
+    {
+        if ($directories === []) {
+            $temporaryGitConfiguration = $this->temporaryDirectory
+                . DIRECTORY_SEPARATOR
+                . $configurationFileName;
+        } else {
+            mkdir($this->temporaryDirectory . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $directories), 0777, true);
+            $temporaryGitConfiguration = $this->temporaryDirectory
+                . DIRECTORY_SEPARATOR
+                . implode(DIRECTORY_SEPARATOR, $directories)
+                . DIRECTORY_SEPARATOR . $configurationFileName;
+        }
+
+        if (file_put_contents($temporaryGitConfiguration, $content) === false) {
+            $exceptionMessage = "Failed to create temporary "
+                . "Git configuration file {$temporaryGitConfiguration}.";
+            throw new \RuntimeException($exceptionMessage);
+        }
+
+        return $temporaryGitConfiguration;
+    }
+
+    /**
      * Create temporary storage file.
      *
      * @param  string $content Content of file.

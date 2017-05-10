@@ -56,29 +56,11 @@ class User
     }
 
     /**
-     * @param  string $name
-     * @return void
-     */
-    public function setName(string $name)
-    {
-        $this->name = $name;
-    }
-
-    /**
      * @return string
      */
     public function getEmail(): string
     {
         return $this->email;
-    }
-
-    /**
-     * @param  string $email
-     * @return void
-     */
-    public function setEmail(string $email)
-    {
-        $this->email = $email;
     }
 
     /**

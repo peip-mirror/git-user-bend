@@ -23,6 +23,7 @@ if (false === $autoloaded) {
    exit(1);
 }
 
+use Stolt\GitUserBend\Git\Configuration;
 use Stolt\GitUserBend\Git\Repository;
 use Stolt\GitUserBend\Persona\Storage;
 use Stolt\GitUserBend\Helpers\Str as OsHelper;
@@ -34,6 +35,7 @@ use Stolt\GitUserBend\Commands\PersonasCommand;
 use Stolt\GitUserBend\Commands\RetireCommand;
 use Stolt\GitUserBend\Commands\UseCommand;
 use Stolt\GitUserBend\Commands\WhoamiCommand;
+use Stolt\GitUserBend\Commands\CreateConditionalConfigCommand;
 use Symfony\Component\Console\Application;
 
 if ((new OsHelper())->isWindows()) {
@@ -54,9 +56,11 @@ $application = new Application('Git user bend', VERSION);
 
 $storage = new Storage(STORAGE_FILE);
 $repository = new Repository(WORKING_DIRECTORY);
+$gitConfiguration = new Configuration(HOME_DIRECTORY);
 
 $application->add(new AddCommand($storage));
 $application->add(new ImportCommand($storage, $repository));
+$application->add(new CreateConditionalConfigCommand($storage, $repository, $gitConfiguration));
 $application->add(new ExportCommand($storage, $repository));
 $application->add(new PairCommand($storage, $repository));
 $application->add(new PersonasCommand($storage));
